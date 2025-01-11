@@ -1,0 +1,397 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+<head>
+    <!-- Book generated using mdBook -->
+    <meta charset="UTF-8">
+    <title>Development Environment Setup - The Cookbook</title>
+
+
+    <!-- Custom HTML head -->
+
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+    <link rel="stylesheet" href="../css/variables.css">
+    <link rel="stylesheet" href="../css/general.css">
+    <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+    <!-- Fonts -->
+    <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+    <!-- Highlight.js Stylesheets -->
+    <link rel="stylesheet" href="../highlight.css">
+    <link rel="stylesheet" href="../tomorrow-night.css">
+    <link rel="stylesheet" href="../ayu-highlight.css">
+
+    <!-- Custom theme stylesheets -->
+
+        <!-- MathJax -->
+        <script async
+                src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+    <!-- Provide site root to javascript -->
+    <script>
+        var path_to_root = "../";
+        var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+    </script>
+    <!-- Start loading toc.js asap -->
+    <script src="../toc.js"></script>
+</head>
+<body>
+<div id="body-container">
+    <!-- Work around some values being stored in localStorage wrapped in quotes -->
+    <script>
+        try {
+            var theme = localStorage.getItem('mdbook-theme');
+            var sidebar = localStorage.getItem('mdbook-sidebar');
+
+            if (theme.startsWith('"') && theme.endsWith('"')) {
+                localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+            }
+
+            if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+            }
+        } catch (e) {
+        }
+    </script>
+
+    <!-- Set the theme before any content is loaded, prevents flash -->
+    <script>
+        var theme;
+        try {
+            theme = localStorage.getItem('mdbook-theme');
+        } catch (e) {
+        }
+        if (theme === null || theme === undefined) {
+            theme = default_theme;
+        }
+        const html = document.documentElement;
+        html.classList.remove('light')
+        html.classList.add(theme);
+        html.classList.add("js");
+    </script>
+
+    <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+    <!-- Hide / unhide sidebar before it is displayed -->
+    <script>
+        var sidebar = null;
+        var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+        if (document.body.clientWidth >= 1080) {
+            try {
+                sidebar = localStorage.getItem('mdbook-sidebar');
+            } catch (e) {
+            }
+            sidebar = sidebar || 'visible';
+        } else {
+            sidebar = 'hidden';
+        }
+        sidebar_toggle.checked = sidebar === 'visible';
+        html.classList.remove('sidebar-visible');
+        html.classList.add("sidebar-" + sidebar);
+    </script>
+
+    <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+        <!-- populated by js -->
+        <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+        <noscript>
+            <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+        </noscript>
+        <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+            <div class="sidebar-resize-indicator"></div>
+        </div>
+    </nav>
+
+    <div id="page-wrapper" class="page-wrapper">
+
+        <div class="page">
+            <div id="menu-bar-hover-placeholder"></div>
+            <div id="menu-bar" class="menu-bar sticky">
+                <div class="left-buttons">
+                    <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor"
+                           title="Toggle Table of Contents" aria-label="Toggle Table of Contents"
+                           aria-controls="sidebar">
+                        <i class="fa fa-bars"></i>
+                    </label>
+                    <button id="theme-toggle" class="icon-button" type="button" title="Change theme"
+                            aria-label="Change theme" aria-haspopup="true" aria-expanded="false"
+                            aria-controls="theme-list">
+                        <i class="fa fa-paint-brush"></i>
+                    </button>
+                    <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                        <li role="none">
+                            <button role="menuitem" class="theme" id="light">Light</button>
+                        </li>
+                        <li role="none">
+                            <button role="menuitem" class="theme" id="rust">Rust</button>
+                        </li>
+                        <li role="none">
+                            <button role="menuitem" class="theme" id="coal">Coal</button>
+                        </li>
+                        <li role="none">
+                            <button role="menuitem" class="theme" id="navy">Navy</button>
+                        </li>
+                        <li role="none">
+                            <button role="menuitem" class="theme" id="ayu">Ayu</button>
+                        </li>
+                    </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)"
+                                aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S"
+                                aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                </div>
+
+                <h1 class="menu-title">The Cookbook</h1>
+
+                <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/dr-hextanium/cookbook/tree/main" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+                        <a href="https://github.com/dr-hextanium/cookbook/tree/main/src/intro_to_programming/setup.md" title="Suggest an edit" aria-label="Suggest an edit">
+                            <i id="git-edit-button" class="fa fa-edit"></i>
+                        </a>
+
+                </div>
+            </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..."
+                               aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+            <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+            <script>
+                document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                Array.from(document.querySelectorAll('#sidebar a')).forEach(function (link) {
+                    link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                });
+            </script>
+
+            <div id="content" class="content">
+                <main>
+                    <h1 id="development-environment-setup"><a class="header" href="#development-environment-setup">Development Environment Setup</a></h1>
+<p>This is a guide designed to assist new FTC programmers setup the <a href="https://developer.android.com/studio/">Android Studio</a> environment to program a robot.</p>
+<h2 id="ingredients"><a class="header" href="#ingredients">Ingredients</a></h2>
+<p>A <strong>Computer</strong> that has the <a href="https://developer.android.com/studio/install">required specs</a> for <a href="https://developer.android.com/studio/">Android Studio</a> and installing <a href="https://www.oracle.com/java/technologies/downloads/">Java</a>. <br>
+Access to <strong>Admin Permissions</strong> on aforementioned computer.<br></p>
+<h2 id="software-to-be-installed"><a class="header" href="#software-to-be-installed">Software to be Installed</a></h2>
+<p><strong>FTC SDK</strong>: <a href="https://github.com/FIRST-Tech-Challenge/FtcRobotController">FtcRobotController</a><br>
+<strong>IDE</strong>: <a href="https://developer.android.com/studio/">Android Studio</a><br>
+<strong>Java</strong>: Any recent version of <a href="https://www.oracle.com/java/technologies/downloads/">Java</a><br>
+<strong>ADB</strong>: <a href="https://developer.android.com/tools/releases/platform-tools">Android Debug Bridge</a><br></p>
+<h2 id="recipe-installation"><a class="header" href="#recipe-installation">Recipe (Installation)</a></h2>
+<ol>
+<li><strong>Download and Install <a href="https://www.oracle.com/java/technologies/downloads/">Java</a></strong>:
+<strong><br>NOTE: Installing <a href="https://www.oracle.com/java/technologies/downloads/">Java</a> may require Admin Permissions.</strong>
+<ul>
+<li>Download the latest version of <a href="https://www.oracle.com/java/technologies/downloads/">Java</a>.</li>
+<li>Run the installer and follow the on-screen instructions. <br>
+<br></li>
+</ul>
+</li>
+<li><strong>Download and Install <a href="https://developer.android.com/studio/">Android Studio</a></strong>:
+<strong><br>NOTE: Installing <a href="https://developer.android.com/studio/">Android Studio</a> may require Admin Permissions.</strong>
+<ul>
+<li>Download the latest version of <a href="https://developer.android.com/studio/">Android Studio</a>.</li>
+<li>Run the installer and follow the on-screen instructions.</li>
+<li>Open <a href="https://developer.android.com/studio/">Android Studio</a>. <br>
+<br></li>
+</ul>
+</li>
+<li><strong>Download and Open <a href="https://github.com/FIRST-Tech-Challenge/FtcRobotController">FtcRobotController</a></strong>:
+<ul>
+<li>In the <a href="https://github.com/FIRST-Tech-Challenge/FtcRobotController">FtcRobotController</a> GitHub repository, press the blue <strong>code</strong> button and press <a href="https://github.com/FIRST-Tech-Challenge/FtcRobotController/archive/refs/heads/master.zip">download zip</a>.
+<ul>
+<li>You can alternatively use <a href="https://desktop.github.com/">Github Desktop</a> to open <a href="https://github.com/FIRST-Tech-Challenge/FtcRobotController">FtcRobotController</a> in <a href="https://developer.android.com/studio/">Android Studio</a>, which is not covered in this Recipe.</li>
+</ul>
+</li>
+<li>Extract the contents of the zip file to a folder (typically in your Downloads or Documents folder).</li>
+<li>In <a href="https://developer.android.com/studio/">Android Studio</a>, press File → Open (⌘ + O on Mac or Win + O on Windows).</li>
+<li>Select the folder you extracted the zip file to, and press open. <strong>DO NOT</strong> open any folder inside the extracted folder.
+<ul>
+<li>On MacOS, you can alternatively drag the folder from Finder onto the <a href="https://developer.android.com/studio/">Android Studio</a> icon in your taskbar to open the folder.</li>
+</ul>
+</li>
+<li>Wait for the project to load. You should end up with 3 folders in the Android view panel (which you should automatically be moved to once ready): <strong>FtcRobotController</strong>, <strong>TeamCode</strong>, and <strong>Gradle Scripts</strong>. <br>
+<br></li>
+</ul>
+</li>
+<li><strong>Install</strong> <a href="https://developer.android.com/studio/releases/platform-tools"><strong>ADB</strong></a>:
+<strong><br>NOTE: Installing <a href="https://developer.android.com/studio/releases/platform-tools">ADB</a> may require Admin Permissions.</strong>
+<ul>
+<li>Download the latest version of <a href="https://developer.android.com/studio/releases/platform-tools">ADB</a>.
+Press on one of the three links depending on your operating system.</li>
+<li>Extract the contents of the zip file to a folder (typically in your Downloads or Documents folder).</li>
+<li>Add the folder to your system's PATH variable:
+<ul>
+<li><strong>Windows</strong>:
+<ul>
+<li>Open the start menu and search for "Environment Variables", and press enter.</li>
+<li>Click on "Edit the system environment variables".</li>
+<li>Click on "Environment Variables".</li>
+<li>In the "System variables" section, find the "Path" variable and click "Edit".</li>
+<li>Click "New" and paste the path to the folder where you extracted the zip file.</li>
+<li>Click "OK" on all the windows.</li>
+</ul>
+</li>
+<li><strong>Mac</strong>: <br>
+<ul>
+<li>
+<p>Option 1 - Using <a href="https://brew.sh/">Homebrew</a> (Highly Recommended) <br>
+<a href="https://brew.sh/">Homebrew</a> is a package manager for Mac. This is the easiest way and will provide automatic updates.</p>
+<ul>
+<li>Install the <a href="https://brew.sh/">Homebrew</a> package manager by running the following command in a terminal:</li>
+</ul>
+<pre><code class="language-bash">/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
+</code></pre>
+<ul>
+<li>Then, run this command to install <a href="https://developer.android.com/studio/releases/platform-tools">ADB</a> using <a href="https://brew.sh/">Homebrew</a>:</li>
+</ul>
+<pre><code class="language-bash">brew install android-platform-tools
+</code></pre>
+</li>
+<li>
+<p>Option 2 - Manual Installation</p>
+<ul>
+<li>Go to your Downloads folder with this command in terminal:</li>
+</ul>
+<pre><code class="language-bash">cd ~/Downloads/
+</code></pre>
+<ul>
+<li>Then, to avoid deleting the ADB files, move the downloaded file to a new folder (the commands below should still work with modern versions of MacOS):</li>
+</ul>
+<pre><code class="language-bash">mkdir ~/.android-sdk-macosx
+mv platform-tools/ ~/.android-sdk-macosx/platform-tools
+</code></pre>
+<ul>
+<li>Add <code>platform-tools</code> to your path</li>
+</ul>
+<pre><code class="language-bash">echo 'export PATH=$PATH:~/.android-sdk-macosx/platform-tools/' &gt;&gt; ~/.bash_profile
+</code></pre>
+<ul>
+<li>Reload your terminal profile (or restart your terminal):</li>
+</ul>
+<pre><code class="language-bash">source ~/.bash_profile
+</code></pre>
+</li>
+</ul>
+</li>
+<li><strong>Linux</strong>:
+<br><a href="https://developer.android.com/studio/releases/platform-tools">ADB</a> should already be installed by default with the installation of Android Studio. If not, you can use the following steps below to install <a href="https://developer.android.com/studio/releases/platform-tools">ADB</a> manually:<br>
+<br>
+<ul>
+<li>Open a terminal window and run the following command:
+<pre><code class="language-bash">nano ~/.bashrc
+</code></pre>
+<ul>
+<li>Add the following line to the file:</li>
+</ul>
+<pre><code class="language-bash">export PATH=$PATH:/path/to/adb/folder
+</code></pre>
+<ul>
+<li>Press <code>Ctrl + X</code>, then <code>Y</code>, then <code>Enter</code> to save the file.</li>
+<li>Run the following command:</li>
+</ul>
+<pre><code class="language-bash">source ~/.bashrc
+</code></pre>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Finally, to check that your properly installed <a href="https://developer.android.com/studio/releases/platform-tools">ADB</a>, in the Android Studio Terminal (Control + F12 on Windows or ⌘ + F12 on Mac), or on your default/preferred terminal, run the following command:</li>
+</ul>
+<pre><code class="language-bash">adb devices
+</code></pre>
+<ul>
+<li>If you see a message saying <code>List of devices attached</code>, you have successfully installed ADB (even if there are no devices attached).</li>
+</ul>
+</li>
+</ol>
+<p>Congratulations! You have successfully installed the necessary software to program an FTC robot. You can now start programming your robot.</p>
+<h2 id="troubleshooting"><a class="header" href="#troubleshooting">Troubleshooting</a></h2>
+<ul>
+<li>If you have questions/issues with the installation process, the <a href="https://discord.gg/first-tech-challenge">Unofficial FTC Discord</a> has many experienced programmers who can help you with all sorts of issues, including installation issues.</li>
+<li><em>Last Updated: 2024-05-30</em></li>
+</ul>
+
+                </main>
+
+                <nav class="nav-wrapper" aria-label="Page navigation">
+                    <!-- Mobile navigation buttons -->
+                        <a rel="prev" href="../tags.html" class="mobile-nav-chapters previous"
+                           title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <i class="fa fa-angle-left"></i>
+                        </a>
+
+                        <a rel="next prefetch" href="../intro_to_programming/intro_to_git.html" class="mobile-nav-chapters next"
+                           title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <i class="fa fa-angle-right"></i>
+                        </a>
+
+                    <div style="clear: both"></div>
+                </nav>
+            </div>
+        </div>
+
+        <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                <a rel="prev" href="../tags.html" class="nav-chapters previous" title="Previous chapter"
+                   aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <i class="fa fa-angle-left"></i>
+                </a>
+
+                <a rel="next prefetch" href="../intro_to_programming/intro_to_git.html" class="nav-chapters next" title="Next chapter"
+                   aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <i class="fa fa-angle-right"></i>
+                </a>
+        </nav>
+
+    </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+    <script src="../clipboard.min.js"></script>
+    <script src="../highlight.js"></script>
+    <script src="../book.js"></script>
+
+    <!-- Cloudflare Web Analytics -->
+    <script defer src='https://static.cloudflareinsights.com/beacon.min.js'
+            data-cf-beacon='{"token": "6e64e393030545a19896dcac9e462214"}'></script>
+    <!-- End Cloudflare Web Analytics -->
+
+    <script defer data-domain="cookbook.dairy.foundation" src="https://plausible.j5155.page/js/script.js"></script>
+
+    <!-- Custom JS scripts -->
+
+
+</div>
+</body>
+</html>

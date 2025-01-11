@@ -1,0 +1,422 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+<head>
+    <!-- Book generated using mdBook -->
+    <meta charset="UTF-8">
+    <title>Introduction to Git and Github - The Cookbook</title>
+
+
+    <!-- Custom HTML head -->
+
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+    <link rel="stylesheet" href="../css/variables.css">
+    <link rel="stylesheet" href="../css/general.css">
+    <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+    <!-- Fonts -->
+    <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+    <!-- Highlight.js Stylesheets -->
+    <link rel="stylesheet" href="../highlight.css">
+    <link rel="stylesheet" href="../tomorrow-night.css">
+    <link rel="stylesheet" href="../ayu-highlight.css">
+
+    <!-- Custom theme stylesheets -->
+
+        <!-- MathJax -->
+        <script async
+                src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+    <!-- Provide site root to javascript -->
+    <script>
+        var path_to_root = "../";
+        var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+    </script>
+    <!-- Start loading toc.js asap -->
+    <script src="../toc.js"></script>
+</head>
+<body>
+<div id="body-container">
+    <!-- Work around some values being stored in localStorage wrapped in quotes -->
+    <script>
+        try {
+            var theme = localStorage.getItem('mdbook-theme');
+            var sidebar = localStorage.getItem('mdbook-sidebar');
+
+            if (theme.startsWith('"') && theme.endsWith('"')) {
+                localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+            }
+
+            if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+            }
+        } catch (e) {
+        }
+    </script>
+
+    <!-- Set the theme before any content is loaded, prevents flash -->
+    <script>
+        var theme;
+        try {
+            theme = localStorage.getItem('mdbook-theme');
+        } catch (e) {
+        }
+        if (theme === null || theme === undefined) {
+            theme = default_theme;
+        }
+        const html = document.documentElement;
+        html.classList.remove('light')
+        html.classList.add(theme);
+        html.classList.add("js");
+    </script>
+
+    <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+    <!-- Hide / unhide sidebar before it is displayed -->
+    <script>
+        var sidebar = null;
+        var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+        if (document.body.clientWidth >= 1080) {
+            try {
+                sidebar = localStorage.getItem('mdbook-sidebar');
+            } catch (e) {
+            }
+            sidebar = sidebar || 'visible';
+        } else {
+            sidebar = 'hidden';
+        }
+        sidebar_toggle.checked = sidebar === 'visible';
+        html.classList.remove('sidebar-visible');
+        html.classList.add("sidebar-" + sidebar);
+    </script>
+
+    <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+        <!-- populated by js -->
+        <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+        <noscript>
+            <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+        </noscript>
+        <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+            <div class="sidebar-resize-indicator"></div>
+        </div>
+    </nav>
+
+    <div id="page-wrapper" class="page-wrapper">
+
+        <div class="page">
+            <div id="menu-bar-hover-placeholder"></div>
+            <div id="menu-bar" class="menu-bar sticky">
+                <div class="left-buttons">
+                    <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor"
+                           title="Toggle Table of Contents" aria-label="Toggle Table of Contents"
+                           aria-controls="sidebar">
+                        <i class="fa fa-bars"></i>
+                    </label>
+                    <button id="theme-toggle" class="icon-button" type="button" title="Change theme"
+                            aria-label="Change theme" aria-haspopup="true" aria-expanded="false"
+                            aria-controls="theme-list">
+                        <i class="fa fa-paint-brush"></i>
+                    </button>
+                    <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                        <li role="none">
+                            <button role="menuitem" class="theme" id="light">Light</button>
+                        </li>
+                        <li role="none">
+                            <button role="menuitem" class="theme" id="rust">Rust</button>
+                        </li>
+                        <li role="none">
+                            <button role="menuitem" class="theme" id="coal">Coal</button>
+                        </li>
+                        <li role="none">
+                            <button role="menuitem" class="theme" id="navy">Navy</button>
+                        </li>
+                        <li role="none">
+                            <button role="menuitem" class="theme" id="ayu">Ayu</button>
+                        </li>
+                    </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)"
+                                aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S"
+                                aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                </div>
+
+                <h1 class="menu-title">The Cookbook</h1>
+
+                <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/dr-hextanium/cookbook/tree/main" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+                        <a href="https://github.com/dr-hextanium/cookbook/tree/main/src/intro_to_programming/intro_to_git.md" title="Suggest an edit" aria-label="Suggest an edit">
+                            <i id="git-edit-button" class="fa fa-edit"></i>
+                        </a>
+
+                </div>
+            </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..."
+                               aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+            <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+            <script>
+                document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                Array.from(document.querySelectorAll('#sidebar a')).forEach(function (link) {
+                    link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                });
+            </script>
+
+            <div id="content" class="content">
+                <main>
+                    <h1 id="introduction-to-git-and-github"><a class="header" href="#introduction-to-git-and-github">Introduction to Git and GitHub</a></h1>
+<p>This guide is designed to help FTC teams understand how to use Git and GitHub to track changes,
+collaborate better, and recover previous versions.
+There are often multiple ways to achieve the same task when using Git,
+so this guide will explain the method we think is the easiest.</p>
+<p>This guide also assumes you are using the base FIRST Tech Challenge SDK.
+If you are instead using the RoadRunner quickstart or similar, use that in place of the SDK.</p>
+<h3 id="git-vs-github"><a class="header" href="#git-vs-github">Git vs GitHub</a></h3>
+<p><strong>Git</strong> is a version control system that tracks changes in code over time, allowing you to collaborate effectively.
+<strong>GitHub</strong> is a platform that hosts Git repositories.
+Though there are many Git hosting platforms, including GitLab and Bitbucket,
+this guide focuses on GitHub because it is the easiest to use with the FTC SDK.</p>
+<h2 id="ingredients"><a class="header" href="#ingredients">Ingredients</a></h2>
+<ol>
+<li>Internet access</li>
+<li>A computer</li>
+<li>Android Studio</li>
+<li>A <a href="https://github.com/">GitHub</a> account and organization.
+<ul>
+<li>To create an account, follow the steps on <a href="https://docs.github.com/en/get-started/start-your-journey/creating-an-account-on-github">GitHub</a>.</li>
+<li>While creating an organization is optional, it is highly recommended for FTC teams.
+Follow the directions on <a href="https://docs.github.com/en/organizations/collaborating-with-groups-in-organizations/creating-a-new-organization-from-scratch">GitHub</a>.</li>
+<li>Note that user accounts can only create one fork of a repository, while organization accounts can create multiple.
+This makes it easier for your team to set up a repository for each season.</li>
+</ul>
+</li>
+</ol>
+<h2 id="recipe"><a class="header" href="#recipe">Recipe</a></h2>
+<h3 id="0-installing-git"><a class="header" href="#0-installing-git">0. Installing Git</a></h3>
+<p>The easiest way to install Git on your device is
+to download it from <a href="https://git-scm.com/downloads">Git's download page</a>.
+Select your operating system and follow the instructions on the website.</p>
+<h3 id="1-forking-the-repository"><a class="header" href="#1-forking-the-repository">1. Forking the Repository</a></h3>
+<p>This step only needs to be done once each season.</p>
+<blockquote>
+<p>A Fork on GitHub is a copy of another repository on GitHub from one account to another account.
+The new forked repository retains a parent-child relationship with the origin repository.
+Forks are typically used when software will have an independent line of development,
+such as when FTC teams develop their own team code
+using the FIRST-Tech-Challenge/FtcRobotController repository as a basis.
+FTC teams should create a Fork of the FIRST-Tech-Challenge/FtcRobotController repository as a convenient way
+to manage their software development process.
+Thanks to the parent-child relationship,
+when changes are made to the parent repository
+those changes can be easily tracked and fetched/merged into the forked repository,
+keeping the forked repository up to date.</p>
+</blockquote>
+<ul>
+<li>The FIRST Tech Challenge documentation</li>
+</ul>
+<p>First, open the <a href="https://github.com/FIRST-Tech-Challenge/FtcRobotController">FtcRobotController repository</a>.
+The FtcRobotController repo is the Software Development Kit (SDK)
+provided by FIRST that allows you to write your own robot code.</p>
+<p>Once you have opened the repo, click the <code>Fork</code> button in the upper-right-hand corner.
+That will bring you to a page that looks like this:</p>
+<p><img src="../static/intro_to_git/fork.png" alt="The fork page" /></p>
+<p>Under the <code>Owner</code> dropdown, select your organization (if you elected to create one),
+as opposed to your individual user account.
+Under <code>Repository name</code>, I recommend naming your repo after the current FTC season name
+(such as Into The Deep or CenterStage), or by the year (such as 2024).
+Finally, press <code>Create fork</code> to create your own copy of the SDK repository.</p>
+<h4 id="15-logging-into-github-on-android-studio"><a class="header" href="#15-logging-into-github-on-android-studio">1.5 Logging into GitHub on Android Studio</a></h4>
+<p>First, open your <a href="https://github.com/settings/tokens">GitHub token settings</a>,
+either by clicking on that link or by going to Account Settings → Developer Settings → Tokens (Classic).
+Press <code>Generate new token (classic)</code> at the top and that will take you to a page that looks like this:</p>
+<p><img src="../static/intro_to_git/personal_access_token.png" alt="The token generation page" /></p>
+<p>For <code>Note</code>, write the use case of the token, such as "Android Studio."
+For <code>Expiration</code>, select <code>No expiration</code>, which may cause GitHub to warn you.
+For <code>Select scopes</code>, select <code>repo</code>, <code>workflow</code>, <code>read:org</code>, and <code>gist</code>.
+Finally, click <code>Generate token</code> and copy it.</p>
+<p>Now open Android Studio.
+Open your settings (under <code>File</code> then <code>Settings</code>)
+and then go to <code>Version Control</code> -&gt; <code>GitHub</code>.
+In the top left corner of the box, press the <code>+</code> icon and <code>Log in with token...</code>,
+and paste in the token you just generated.</p>
+<h3 id="2-opening-your-fork-in-android-studio"><a class="header" href="#2-opening-your-fork-in-android-studio">2. Opening Your Fork in Android Studio</a></h3>
+<p>This step needs to be done by everyone who intends on programming for your team.</p>
+<p>First, at the top right of your new repository, press the green <code>Code</code> button.
+Under that tab, copy the HTTP url of your repo.</p>
+<p>Next, open Android Studio and navigate to the <code>New Project from Version Control</code> menu.
+To do that, do <code>File</code> -&gt; <code>New</code> -&gt; <code>Project from Version Control</code>, which should bring you to a menu that looks like this:</p>
+<p><img src="../static/intro_to_git/get_from_vcs.png" alt="Get from VCS menu" /></p>
+<p>For the URL, paste in the link that you just copied from your repo, then press <code>Clone</code>.
+Android Studio will then download your project and build it through Gradle, which may take a few minutes;
+you can monitor this process using the progress bar in the bottom right.</p>
+<p>Once this is complete, your project is ready to use,
+and you can start coding as normal.</p>
+<h3 id="3-your-first-commit"><a class="header" href="#3-your-first-commit">3. Your First Commit</a></h3>
+<p>Now that you've made some changes,
+you should create a <em>commit</em> to snapshot your changes and <em>push</em> (upload) them to GitHub.
+To do this, press the button on the left side that looks like a line with a circle on it
+(just like the circles in the above image) to open the Commit menu in Android Studio.
+That will look like this:</p>
+<p><img src="../static/intro_to_git/commit%20menu.png" alt="The commit menu" /></p>
+<p>The <code>Changes</code> section will show the files you have edited.
+Select the files you want to commit by clicking on the checkbox next to them,
+or use the checkbox in the top left to select all of them.</p>
+<p>Finally, write a commit message in the box in the lower portion of the menu to describe what you've changed.
+In this example, I added a <code>MecanumChassis</code> wrapper and edited some other files,
+so that's what I wrote in my commit message.</p>
+<p>Once you're done,
+press <code>Commit and Push...</code> which will commit your changes and push them to GitHub's copy of your repository.</p>
+<p>In some situations (such as when you are offline, or when a push fails),
+you may also prefer to just hit the <code>Commit</code> button to save an offline snapshot of your changes,
+and then later click your branch title in the top right, which displays the following options:</p>
+<p><img src="../static/intro_to_git/push_button.png" alt="The push icon" /></p>
+<p>Click <code>Push...</code>, and then <code>Push</code> in the bottom right of the menu that comes up after that.</p>
+<h3 id="4-pulling-from-github"><a class="header" href="#4-pulling-from-github">4. Pulling from GitHub</a></h3>
+<p>Once one person has committed a change,
+the other programmers on your team will want to download or <em>pull</em> those changes from GitHub.
+To do this, click on your branch and then the <code>Update Project</code> icon or button in the top left, as shown below:</p>
+<p><img src="../static/intro_to_git/update_project.png" alt="The pull icon" /></p>
+<p>This will ask you whether you want to Merge or to Rebase the incoming changes.
+Merging is simpler, so we will explain it here; select it and hit OK.</p>
+<p>Most of the time that will be all that is necessary to download all the incoming changes, and
+you will immediately be able to resume coding.
+However, occasionally when multiple people edit the same file at the same time, a Merge Conflict can occur.
+This can appear as a Conflict pop up as shown below.</p>
+<p><img src="../static/intro_to_git/merge_conflicts_dialog_dark.png" alt="The Conflict pop up" /></p>
+<p>See the <a href="https://www.jetbrains.com/help/idea/resolve-conflicts.html">official JetBrains documentation</a>
+for what to do in this scenario.
+Make sure to commit after the merge is complete.</p>
+<h2 id="additional-features"><a class="header" href="#additional-features">Additional Features</a></h2>
+<h3 id="updating-from-the-first-sdk"><a class="header" href="#updating-from-the-first-sdk">Updating from the FIRST SDK</a></h3>
+<p>Throughout the season, the FIRST SDK sometimes updates to new versions.
+To incorporate these changes into your codebase,
+we need to add the SDK as a remote repository and then pull in its changes.</p>
+<p>First, open a terminal using the button in the bottom left.</p>
+<p>Next, the first time you update, run this command in the terminal:
+<code>git remote add sdk https://github.com/FIRST-Tech-Challenge/FtcRobotController/</code>
+This will add the FIRST SDK as a remote repository named <code>sdk</code>.
+You will only have to do this once.</p>
+<p>Next, each time you want to update, run this command: <code>git pull sdk master --no-rebase</code>
+This will pull the changes from the <code>master</code> branch of the <code>sdk</code> remote repository.
+We use <code>--no-rebase</code> here to ensure that we merge instead of rebasing.</p>
+<p>Finally, make a new commit to incorporate the changes into your repository.
+There will very likely be merge conflicts, review step 4 to learn how to deal with those.</p>
+<h3 id="creating-branches"><a class="header" href="#creating-branches">Creating Branches</a></h3>
+<p>A branch allows you to separate your codebase into multiple versions,
+which can be developed individually and combined later.
+Each branch can have its own set of commits.
+In the following image, each circle represents a commit in the branch.</p>
+<p><img src="../static/intro_to_git/branches.png" alt="Branches and Commits" /></p>
+<p>Some teams prefer to create a new branch for each feature that they create.
+To do that in AS, in the top menu to go <code>Git</code> -&gt; <code>New Branch</code>, and type in the name of that feature.
+AS will automatically <em>checkout</em> that branch, meaning all future commits from your client will be to that branch.</p>
+<h3 id="merging-branches"><a class="header" href="#merging-branches">Merging Branches</a></h3>
+<p>To merge changes from one branch onto another through Android Studio, open the Git menu as shown below.</p>
+<p><img src="../static/intro_to_git/git_menu.png" alt="Git menu" /></p>
+<p>Now, right-click on the branch you intend on merging from and press <code>Merge origin/&lt;branch&gt; into &lt;branch&gt;</code>.
+This will simply update those files in your local copy of the code with the changes from the other branch.
+Note that this can also lead to Merge Conflicts as explained in step 4.
+After the merge is complete, make sure to commit the new combined code.</p>
+<p>It is also possible to merge changes online through GitHub using Pull Requests.
+Pull Requests also allow others to easily review your changes.</p>
+<p>At this point, we're going back to the GitHub website.
+Open your repository and hit the <code>Pull Requests</code> tab in the top left,
+which will open a page that looks somewhat like this:</p>
+<p><img src="../static/intro_to_git/pull_request.png" alt="Pull requests" /></p>
+<p>Make sure that both repositories are the same (your repo).
+Then, for base, select <code>master</code>, and for <code>compare</code> select whatever branch you were working with.
+Press <code>Create pull request</code> and type the name and description of the commit(s) you are working with,
+and then press <code>Create pull request</code> again.</p>
+<p>At this point, GitHub will automatically determine if there are merge conflicts.
+See <a href="https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/addressing-merge-conflicts/resolving-a-merge-conflict-on-github">GitHub's official documentation</a>
+for information on how to resolve them, if they occur.
+Once any conflicts are resolved,
+and you are ready to merge the branches (potentially after getting approval from your team),
+select the <code>Merge pull request</code> button to accept the pull request.</p>
+<p><em>Last updated: 2024-10-06</em></p>
+
+                </main>
+
+                <nav class="nav-wrapper" aria-label="Page navigation">
+                    <!-- Mobile navigation buttons -->
+                        <a rel="prev" href="../intro_to_programming/setup.html" class="mobile-nav-chapters previous"
+                           title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <i class="fa fa-angle-left"></i>
+                        </a>
+
+                        <a rel="next prefetch" href="../gradle/downgrading_gradle_jdk/downgrading_gradle_jdk.html" class="mobile-nav-chapters next"
+                           title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <i class="fa fa-angle-right"></i>
+                        </a>
+
+                    <div style="clear: both"></div>
+                </nav>
+            </div>
+        </div>
+
+        <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                <a rel="prev" href="../intro_to_programming/setup.html" class="nav-chapters previous" title="Previous chapter"
+                   aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <i class="fa fa-angle-left"></i>
+                </a>
+
+                <a rel="next prefetch" href="../gradle/downgrading_gradle_jdk/downgrading_gradle_jdk.html" class="nav-chapters next" title="Next chapter"
+                   aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <i class="fa fa-angle-right"></i>
+                </a>
+        </nav>
+
+    </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+    <script src="../clipboard.min.js"></script>
+    <script src="../highlight.js"></script>
+    <script src="../book.js"></script>
+
+    <!-- Cloudflare Web Analytics -->
+    <script defer src='https://static.cloudflareinsights.com/beacon.min.js'
+            data-cf-beacon='{"token": "6e64e393030545a19896dcac9e462214"}'></script>
+    <!-- End Cloudflare Web Analytics -->
+
+    <script defer data-domain="cookbook.dairy.foundation" src="https://plausible.j5155.page/js/script.js"></script>
+
+    <!-- Custom JS scripts -->
+
+
+</div>
+</body>
+</html>

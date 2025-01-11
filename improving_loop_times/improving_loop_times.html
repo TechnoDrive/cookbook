@@ -1,0 +1,436 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+<head>
+    <!-- Book generated using mdBook -->
+    <meta charset="UTF-8">
+    <title>Improving Loop Times - The Cookbook</title>
+
+
+    <!-- Custom HTML head -->
+
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+    <link rel="stylesheet" href="../css/variables.css">
+    <link rel="stylesheet" href="../css/general.css">
+    <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+    <!-- Fonts -->
+    <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+    <!-- Highlight.js Stylesheets -->
+    <link rel="stylesheet" href="../highlight.css">
+    <link rel="stylesheet" href="../tomorrow-night.css">
+    <link rel="stylesheet" href="../ayu-highlight.css">
+
+    <!-- Custom theme stylesheets -->
+
+        <!-- MathJax -->
+        <script async
+                src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+    <!-- Provide site root to javascript -->
+    <script>
+        var path_to_root = "../";
+        var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+    </script>
+    <!-- Start loading toc.js asap -->
+    <script src="../toc.js"></script>
+</head>
+<body>
+<div id="body-container">
+    <!-- Work around some values being stored in localStorage wrapped in quotes -->
+    <script>
+        try {
+            var theme = localStorage.getItem('mdbook-theme');
+            var sidebar = localStorage.getItem('mdbook-sidebar');
+
+            if (theme.startsWith('"') && theme.endsWith('"')) {
+                localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+            }
+
+            if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+            }
+        } catch (e) {
+        }
+    </script>
+
+    <!-- Set the theme before any content is loaded, prevents flash -->
+    <script>
+        var theme;
+        try {
+            theme = localStorage.getItem('mdbook-theme');
+        } catch (e) {
+        }
+        if (theme === null || theme === undefined) {
+            theme = default_theme;
+        }
+        const html = document.documentElement;
+        html.classList.remove('light')
+        html.classList.add(theme);
+        html.classList.add("js");
+    </script>
+
+    <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+    <!-- Hide / unhide sidebar before it is displayed -->
+    <script>
+        var sidebar = null;
+        var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+        if (document.body.clientWidth >= 1080) {
+            try {
+                sidebar = localStorage.getItem('mdbook-sidebar');
+            } catch (e) {
+            }
+            sidebar = sidebar || 'visible';
+        } else {
+            sidebar = 'hidden';
+        }
+        sidebar_toggle.checked = sidebar === 'visible';
+        html.classList.remove('sidebar-visible');
+        html.classList.add("sidebar-" + sidebar);
+    </script>
+
+    <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+        <!-- populated by js -->
+        <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+        <noscript>
+            <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+        </noscript>
+        <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+            <div class="sidebar-resize-indicator"></div>
+        </div>
+    </nav>
+
+    <div id="page-wrapper" class="page-wrapper">
+
+        <div class="page">
+            <div id="menu-bar-hover-placeholder"></div>
+            <div id="menu-bar" class="menu-bar sticky">
+                <div class="left-buttons">
+                    <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor"
+                           title="Toggle Table of Contents" aria-label="Toggle Table of Contents"
+                           aria-controls="sidebar">
+                        <i class="fa fa-bars"></i>
+                    </label>
+                    <button id="theme-toggle" class="icon-button" type="button" title="Change theme"
+                            aria-label="Change theme" aria-haspopup="true" aria-expanded="false"
+                            aria-controls="theme-list">
+                        <i class="fa fa-paint-brush"></i>
+                    </button>
+                    <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                        <li role="none">
+                            <button role="menuitem" class="theme" id="light">Light</button>
+                        </li>
+                        <li role="none">
+                            <button role="menuitem" class="theme" id="rust">Rust</button>
+                        </li>
+                        <li role="none">
+                            <button role="menuitem" class="theme" id="coal">Coal</button>
+                        </li>
+                        <li role="none">
+                            <button role="menuitem" class="theme" id="navy">Navy</button>
+                        </li>
+                        <li role="none">
+                            <button role="menuitem" class="theme" id="ayu">Ayu</button>
+                        </li>
+                    </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)"
+                                aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S"
+                                aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                </div>
+
+                <h1 class="menu-title">The Cookbook</h1>
+
+                <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/dr-hextanium/cookbook/tree/main" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+                        <a href="https://github.com/dr-hextanium/cookbook/tree/main/src/improving_loop_times/improving_loop_times.md" title="Suggest an edit" aria-label="Suggest an edit">
+                            <i id="git-edit-button" class="fa fa-edit"></i>
+                        </a>
+
+                </div>
+            </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..."
+                               aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+            <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+            <script>
+                document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                Array.from(document.querySelectorAll('#sidebar a')).forEach(function (link) {
+                    link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                });
+            </script>
+
+            <div id="content" class="content">
+                <main>
+                    <h1 id="improving-loop-times"><a class="header" href="#improving-loop-times">Improving Loop Times</a></h1>
+<h2 id="recipe"><a class="header" href="#recipe">Recipe</a></h2>
+<p><strong>This recipe will cover various methods to improve loop times. At the end there are full examples of code that combine these methods</strong></p>
+<h3 id="why-are-fast-loop-times-important"><a class="header" href="#why-are-fast-loop-times-important">Why are fast loop times important?</a></h3>
+<p>The more often your teleop is updated, the more responsive it will be to button clicks and joystick changes.
+This can make driving easier.
+Additionally, if you are using PID(F) controllers, the more frequently they update the more accurate they are and the less they oscillate.</p>
+<h3 id="what-causes-slow-loop-times"><a class="header" href="#what-causes-slow-loop-times">What causes slow loop times?</a></h3>
+<p>Surprisingly, the main cause of slow loop times is not processing difficulties or code complexity.
+Most of the processing time is spent on communicating with hardware devices, known as hardware "reads" and hardware "writes".</p>
+<p>Hardware reads are when you are receiving data.
+For example, getting an encoder position, reading a color sensor, or accessing the IMU are all hardware reads.
+On the other hand, hardware writes are when you are sending data.
+For example, setting a motor power, setting a servo position, or configuring an LED are all hardware writes.</p>
+<h3 id="checking-loop-times"><a class="header" href="#checking-loop-times">Checking loop times</a></h3>
+<p>Here is some basic code to measure your loop times in milliseconds.
+The more milliseconds your loop takes, the slower your loop times are.</p>
+<p>This measures looptimes over a single loop, which can lead to unstable readings,
+but is good enough.</p>
+<pre><code class="language-java"><span class="boring">package org.firstinspires.ftc.teamcode;
+</span><span class="boring">
+</span><span class="boring">import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+</span><span class="boring">import com.qualcomm.robotcore.util.ElapsedTime;
+</span><span class="boring">
+</span>public class MeasuringLoopTimes extends OpMode {
+	private ElapsedTime elapsedtime;
+
+	@Override
+	public void init() {
+		elapsedtime = new ElapsedTime();
+		elapsedtime.reset();
+	}
+
+	@Override
+	public void loop() {
+
+		telemetry.addData("Loop Times", elapsedtime.milliseconds());
+		elapsedtime.reset();
+	}
+}
+
+</code></pre>
+<p>You may want to try:</p>
+<ul>
+<li>Average looptimes over the whole runtime (totalRuntime / numberOfLoops).</li>
+<li>Measuring looptimes over a window (over 100 loops, over 50 loops, etc).</li>
+</ul>
+<p>In order to get a better idea of your stable loop times.</p>
+<p>Some of the optimisations we look at may increase the looptime variance, as some
+loops may be very short, while others may be much longer.</p>
+<h3 id="bulk-reading"><a class="header" href="#bulk-reading">Bulk Reading</a></h3>
+<p>Other than I2C devices, reading can be done all at once in a "bulk read" for a huge loop time improvement.</p>
+<p>By default, every time you do a hardware read, a new command is sent to retrieve it.
+Using one command to retrieve ALL the data is bulk reading.</p>
+<p>This recipe will not go into the different bulk reading modes. To learn more look <a href="https://gm0.org/en/latest/docs/software/tutorials/bulk-reads.html">here</a>.</p>
+<h3 id="caching-motor-powers"><a class="header" href="#caching-motor-powers">Caching Motor Powers</a></h3>
+<p>So now let's try and reduce unnecessary hardware writes.</p>
+<p>If a motor is going at 0.5 power, and we keep setting the power to 0.5, the output of the motor will not change.
+However, each one of those <code>setPower()</code> commands is a hardware write which will delay your loop.
+A simple solution to this is to only send a new motor power when it is different from the previous.
+The SDK has this built in for this 'exactly equal' case.</p>
+<p>However, we can go even further then just difference to remove much more unnecessary writes.
+If the motor is currently running at 0.5 power, and you tell it to run at 0.51 power instead, it will have very little effect.
+However, it will unnecessarily perform a loop-delaying hardware write.</p>
+<p>Instead, you can store the last power sent to a motor and check every new <code>setPower()</code> command to only run if the new power is sufficiently different from the previous power.</p>
+<p>Implementations of hardware devices with these optimisations applied are
+available <a href="https://github.com/Dairy-Foundation/CachingHardware">here</a>.
+This github page provides the installation and usage instructions, so this
+recipe won't cover them.</p>
+<h3 id="photon"><a class="header" href="#photon">Photon</a></h3>
+<p>Photon is another way of increasing loop times.
+Photon is an experimental library developed by Eeshwar, an alumni originally from team 7244.
+It allows for significantly faster loop times by parallelizing much more of the hardware reads and writes.
+Installation instructions for Photon are available <a href="https://github.com/Eeshwar-Krishnan/PhotonFTC">here</a>.</p>
+<p>If you have Photon installed, you don't need to use CachingHardware, as Photon
+has its own caching hardware. Note that Photon is more advanced than
+CachingHardware, so it does the optimisations automatically.</p>
+<p>Photon has a few known issues at the moment, here's some troubleshooting steps:</p>
+<p><strong>Some people have installed photon and Android Studio does not recognize the <code>@Photon</code> annotation. Instead of <code>implementation 'com.github.Eeshwar-Krishnan:PhotonFTC:v3.0.1-ALPHA'</code>, try <code>implementation 'com.github.Eeshwar-Krishnan:PhotonFTC:main-SNAPSHOT'</code>.</strong></p>
+<p><strong>Also, be warned. Photon sometimes when used just randomly reverses motors and servos (but it's always the same ones reversed the same way).</strong></p>
+<h3 id="full-examples"><a class="header" href="#full-examples">Full Examples</a></h3>
+<p>This example uses <a href="https://github.com/Dairy-Foundation/CachingHardware">CachingHardware</a></p>
+<pre><code class="language-java"><span class="boring">package org.firstinspires.ftc.teamcode;
+</span><span class="boring">
+</span><span class="boring">import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+</span><span class="boring">import com.qualcomm.robotcore.hardware.DcMotorEx;
+</span><span class="boring">import com.qualcomm.hardware.lynx.LynxModule;
+</span><span class="boring">import com.qualcomm.robotcore.util.ElapsedTime;
+</span><span class="boring">
+</span><span class="boring">import java.util.List;
+</span><span class="boring">
+</span><span class="boring">import dev.frozenmilk.dairy.cachinghardware.CachingDcMotorEx;
+</span><span class="boring">
+</span>public class CachingOptimizedOpMode extends OpMode {
+
+	private CachingDcMotorEx exampleMotor;
+	private List&lt;LynxModule&gt; allHubs;
+	private ElapsedTime elapsedtime;
+
+	@Override
+	public void init() {
+
+		elapsedtime = new ElapsedTime();
+
+		// this just sets the bulk reading mode for each hub
+		allHubs = hardwareMap.getAll(LynxModule.class);
+		for (LynxModule hub : allHubs) {
+			hub.setBulkCachingMode(LynxModule.BulkCachingMode.MANUAL);
+		}
+
+		exampleMotor = new CachingDcMotorEx(hardwareMap.get(DcMotorEx.class, "example motor"));
+		elapsedtime.reset();
+	}
+
+	@Override
+	public void loop() {
+		// clears the cache on each hub
+		for (LynxModule hub : allHubs) {
+			hub.clearBulkCache();
+		}
+
+		// after the first time, it won't actually send new commands
+		exampleMotor.setPower(1);
+
+		telemetry.addData("Motor Position", exampleMotor.getCurrentPosition());
+		telemetry.addData("Loop Times", elapsedtime.milliseconds());
+		elapsedtime.reset();
+	}
+}
+
+</code></pre>
+<p>This example uses <a href="https://github.com/Eeshwar-Krishnan/PhotonFTC">Photon</a></p>
+<pre><code class="language-java"><span class="boring">package org.firstinspires.ftc.teamcode;
+</span><span class="boring">
+</span><span class="boring">import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+</span><span class="boring">import com.qualcomm.robotcore.hardware.DcMotorEx;
+</span><span class="boring">import com.qualcomm.hardware.lynx.LynxModule;
+</span><span class="boring">import com.qualcomm.robotcore.util.ElapsedTime;
+</span><span class="boring">
+</span><span class="boring">import java.util.List;
+</span><span class="boring">
+</span><span class="boring">import com.outoftheboxrobotics.photoncore.Photon;
+</span><span class="boring">
+</span><span class="boring">// note the annotation at the top of the op mode (this is all you have to do to use photon)
+</span>@Photon
+public class PhotonOptimizedOpMode extends OpMode {
+
+	private DcMotorEx exampleMotor;
+	private List&lt;LynxModule&gt; allHubs;
+	private ElapsedTime elapsedtime;
+
+	@Override
+	public void init() {
+
+		elapsedtime = new ElapsedTime();
+
+		// this just sets the bulk reading mode for each hub
+		allHubs = hardwareMap.getAll(LynxModule.class);
+		for (LynxModule hub : allHubs) {
+			hub.setBulkCachingMode(LynxModule.BulkCachingMode.MANUAL);
+		}
+
+		exampleMotor = hardwareMap.get(DcMotorEx.class, "example motor");
+		elapsedtime.reset();
+	}
+
+	@Override
+	public void loop() {
+		// clears the cache on each hub
+		for (LynxModule hub : allHubs) {
+			hub.clearBulkCache();
+		}
+
+		// after the first time, it won't actually send new commands
+		exampleMotor.setPower(1);
+
+		telemetry.addData("Motor Position", exampleMotor.getCurrentPosition());
+		telemetry.addData("Loop Times", elapsedtime.milliseconds());
+		elapsedtime.reset();
+	}
+}
+
+</code></pre>
+<p><em>Last Updated: 2024-10-14</em></p>
+
+                </main>
+
+                <nav class="nav-wrapper" aria-label="Page navigation">
+                    <!-- Mobile navigation buttons -->
+                        <a rel="prev" href="../misc/terminology_and_acronyms.html" class="mobile-nav-chapters previous"
+                           title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <i class="fa fa-angle-left"></i>
+                        </a>
+
+                        <a rel="next prefetch" href="../misc/pedro_vs_roadrunner.html" class="mobile-nav-chapters next"
+                           title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <i class="fa fa-angle-right"></i>
+                        </a>
+
+                    <div style="clear: both"></div>
+                </nav>
+            </div>
+        </div>
+
+        <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                <a rel="prev" href="../misc/terminology_and_acronyms.html" class="nav-chapters previous" title="Previous chapter"
+                   aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <i class="fa fa-angle-left"></i>
+                </a>
+
+                <a rel="next prefetch" href="../misc/pedro_vs_roadrunner.html" class="nav-chapters next" title="Next chapter"
+                   aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <i class="fa fa-angle-right"></i>
+                </a>
+        </nav>
+
+    </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+    <script src="../clipboard.min.js"></script>
+    <script src="../highlight.js"></script>
+    <script src="../book.js"></script>
+
+    <!-- Cloudflare Web Analytics -->
+    <script defer src='https://static.cloudflareinsights.com/beacon.min.js'
+            data-cf-beacon='{"token": "6e64e393030545a19896dcac9e462214"}'></script>
+    <!-- End Cloudflare Web Analytics -->
+
+    <script defer data-domain="cookbook.dairy.foundation" src="https://plausible.j5155.page/js/script.js"></script>
+
+    <!-- Custom JS scripts -->
+
+
+</div>
+</body>
+</html>
