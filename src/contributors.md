@@ -9,3 +9,5 @@
 - j5155 [(github)](https://github.com/j5155) [(discord)](https://discord.com/users/496774369054425109)
 - Arush [(github)](https://github.com/ArushYadlapati) [(discord)](https://discord.com/users/764258716463529986)
 - ZachWaffle [(github)](https://github.com/zachwaffle4) [(discord)](https://discord.com/users/522513851942436867)
+- NN [(github)](https://github.com/NipunNagendra) [(discord)](https://discord.com/users/667550773181415425)
+
